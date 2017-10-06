@@ -2,7 +2,7 @@ import os
 import xlsxwriter
 
 list_of_files = []
-path = 'C:/Users/mrbon/PycharmProjects/DDparsertoxls/'
+path = 'C:/Users/kamorozov/PycharmProjects/DDparser/1/'
 #path
 for file in os.listdir(path):
     if file.endswith(".txt"):

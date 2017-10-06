@@ -63,7 +63,7 @@ def newsheet(NameOfData, NameOfBook, NameOfSheet, Step, index):
     return print('File is created. Added sheet', NameOfSheet)
 
 
-def addinfosheet(NameOfData, NameOfBook, NameOfSheet, Step, index, File):
+def addinfotosheet(NameOfData, NameOfBook, NameOfSheet, Step, index, File):
     global list_of_files
     sheet = NameOfBook.get_worksheet_by_name(NameOfSheet)
     row = 1
