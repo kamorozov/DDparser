@@ -94,7 +94,7 @@ list_of_file_names = []
 for file in os.listdir(path):
     if file.endswith(".txt"):
         list_of_files.append(os.path.join(path, file))
-        list_of_file_names.append(file)
+        list_of_file_names.append(file[:-4])
 
 # заполнение файла
 c_BD = 1
@@ -114,7 +114,7 @@ for file in list_of_files:
     sh_BD.write(len(BasicData) + 3, 0, 'Real top section trays number')
     sh_BD.write(len(BasicData) + 4, 0, 'Real bottom section trays number')
     r_BD = 1
-    sheet_BD.write(0, c_BD, str(list_of_file_names[list_of_files.index(file)][:-4]))
+    sheet_BD.write(0, c_BD, str(list_of_file_names[list_of_files.index(file)]))
     for i in range(0, len(BasicData)):
         sheet_BD.write(r_BD, c_BD, BasicData[i][1])
         r_BD += 1
@@ -132,7 +132,7 @@ for file in list_of_files:
     # добавление информации на вкладку Top Section
     sheet_TS = workbook.get_worksheet_by_name('Top Section')
     r_TS = 2
-    sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)][:-4]))
+    sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)]))
     sheet_TS.write(1, c_TS, 'T, K')
     for t in range(1, len(TopSection[1])):
         sheet_TS.write(1, c_TS + t, 'x' + str(t))
@@ -146,7 +146,7 @@ for file in list_of_files:
     # добавление информации на вкладку Bottom Section
     sheet_BS = workbook.get_worksheet_by_name('Bottom Section')
     r_BS = 2
-    sheet_BS.write(0, c_BS, str(list_of_file_names[list_of_files.index(file)][:-4]))
+    sheet_BS.write(0, c_BS, str(list_of_file_names[list_of_files.index(file)]))
     sheet_BS.write(1, c_BS, 'T, K')
     for t in range(1, len(BottomSection[1])):
         sheet_BS.write(1, c_BS + t, 'x' + str(t))
