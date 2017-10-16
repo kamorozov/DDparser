@@ -32,6 +32,7 @@ def lists_from_file(FileName):
     TextFile.close()
     return BasicData, Topsection, Bottomsection
 
+
 # списки информаци
 def section(name_of_Section):
     for i in range(1, len(name_of_Section), 2):
@@ -47,7 +48,15 @@ def section(name_of_Section):
     for j in range(1, len(name_of_Section), 2):
         temp_section.append(name_of_Section[j - 1])
         temp_section.append(name_of_Section[j][0])
-    return temp_section
+    if temp_section[1][0] > temp_section[-1][0]:
+        temp2_section = []
+        for k in range(1, len(temp_section) // 2, 2):
+            temp2_section.append(temp_section[k - 1])
+            temp2_section.append(temp_section[-k])
+        return temp2_section
+    else:
+        return temp_section
+
 
 # максимальное количество тарелокв для записи
 def max_tays(Section, var_max_trays, NameOfBook, NameOfSheet):
@@ -57,9 +66,19 @@ def max_tays(Section, var_max_trays, NameOfBook, NameOfSheet):
             sheet.write(i + 2, 0, 'Tray# ' + str(i + 1))
         var_max_trays = len(Section) // 2
 
-path = str(input('Enter path to folder with files(using / for separation): '))
 
+# Обработка пути к паке с файлами
+temp_path = str(input('Enter path to folder with files: '))
+if temp_path.find('\\') > -1:
+    s = temp_path.split('\\')
+    path = '/'.join(s)
+else:
+    path = temp_path
 
+if path[:-1] is not '/':
+    path += '/'
+
+# создание таблицы excel
 result_xlsx = path + 'DD_Summary.xlsx'
 
 workbook = xlsxwriter.Workbook(result_xlsx)
@@ -95,7 +114,7 @@ for file in list_of_files:
     sh_BD.write(len(BasicData) + 3, 0, 'Real top section trays number')
     sh_BD.write(len(BasicData) + 4, 0, 'Real bottom section trays number')
     r_BD = 1
-    sheet_BD.write(0, c_BD, str(list_of_file_names[list_of_files.index(file)]))
+    sheet_BD.write(0, c_BD, str(list_of_file_names[list_of_files.index(file)][:-4]))
     for i in range(0, len(BasicData)):
         sheet_BD.write(r_BD, c_BD, BasicData[i][1])
         r_BD += 1
@@ -113,7 +132,7 @@ for file in list_of_files:
     # добавление информации на вкладку Top Section
     sheet_TS = workbook.get_worksheet_by_name('Top Section')
     r_TS = 2
-    sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)]))
+    sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)][:-4]))
     sheet_TS.write(1, c_TS, 'T, K')
     for t in range(1, len(TopSection[1])):
         sheet_TS.write(1, c_TS + t, 'x' + str(t))
@@ -127,7 +146,7 @@ for file in list_of_files:
     # добавление информации на вкладку Bottom Section
     sheet_BS = workbook.get_worksheet_by_name('Bottom Section')
     r_BS = 2
-    sheet_BS.write(0, c_BS, str(list_of_file_names[list_of_files.index(file)]))
+    sheet_BS.write(0, c_BS, str(list_of_file_names[list_of_files.index(file)][:-4]))
     sheet_BS.write(1, c_BS, 'T, K')
     for t in range(1, len(BottomSection[1])):
         sheet_BS.write(1, c_BS + t, 'x' + str(t))
