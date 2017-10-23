@@ -108,6 +108,7 @@ for file in list_of_files:
 
     # добавление информации на вкладку Basic Data
     sheet_BD = workbook.get_worksheet_by_name('Basic Data')
+    # записали название строк
     for i in range(len(BasicData)):
         sh_BD.write(1 + i, 0, BasicData[i][0])
     sh_BD.write(len(BasicData) + 2, 0, 'Real total trays number')
@@ -116,17 +117,20 @@ for file in list_of_files:
     r_BD = 1
     sheet_BD.write(0, c_BD, str(list_of_file_names[list_of_files.index(file)]))
     for i in range(0, len(BasicData)):
-        sheet_BD.write(r_BD, c_BD, BasicData[i][1])
+        try:
+            sheet_BD.write_number(r_BD, c_BD, float(BasicData[i][1]))
+        except:
+            sheet_BD.write(r_BD, c_BD, BasicData[i][1])
         r_BD += 1
-    sheet_BD.write(len(BasicData) + 2, c_BD, len(TopSection) // 2 + len(BottomSection) // 2)
-    sheet_BD.write(len(BasicData) + 3, c_BD, len(TopSection) // 2)
-    sheet_BD.write(len(BasicData) + 4, c_BD, len(BottomSection) // 2)
+    sheet_BD.write_number(len(BasicData) + 2, c_BD, len(TopSection) // 2 + len(BottomSection) // 2)
+    sheet_BD.write_number(len(BasicData) + 3,  c_BD, len(TopSection) // 2)
+    sheet_BD.write_number(len(BasicData) + 4, c_BD, len(BottomSection) // 2)
     for i in range(len(TopSection[1]) - 1):
         sheet_BD.write(len(BasicData) + 5 + i, 0, 'x' + str(i + 1) + 'D')
-        sheet_BD.write(len(BasicData) + 5 + i, c_BD, TopSection[1][i + 1])
+        sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(TopSection[1][i + 1]))
     for i in range(len(BottomSection[-1]) - 1):
         sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
-        sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), c_BD, BottomSection[-1][i + 1])
+        sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD,float(BottomSection[-1][i + 1]))
     c_BD += 1
 
     # добавление информации на вкладку Top Section
@@ -134,11 +138,11 @@ for file in list_of_files:
     r_TS = 2
     sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)]))
     sheet_TS.write(1, c_TS, 'T, K')
-    for t in range(1, len(TopSection[1])):
-        sheet_TS.write(1, c_TS + t, 'x' + str(t))
+    for x in range(1, len(TopSection[1])):
+        sheet_TS.write(1, c_TS + x, 'x' + str(x))
     for i in range(1, len(TopSection), 2):
         for j in range(len(TopSection[i])):
-            sheet_TS.write(r_TS, c_TS + j, TopSection[i][j])
+            sheet_TS.write_number(r_TS, c_TS + j, float(TopSection[i][j]))
         r_TS += 1
     c_TS += len(TopSection[1])
     max_tays(TopSection, max_trays_top, workbook, 'Top Section')
@@ -148,11 +152,11 @@ for file in list_of_files:
     r_BS = 2
     sheet_BS.write(0, c_BS, str(list_of_file_names[list_of_files.index(file)]))
     sheet_BS.write(1, c_BS, 'T, K')
-    for t in range(1, len(BottomSection[1])):
-        sheet_BS.write(1, c_BS + t, 'x' + str(t))
+    for x in range(1, len(BottomSection[1])):
+        sheet_BS.write(1, c_BS + x, 'x' + str(x))
     for i in range(1, len(BottomSection), 2):
         for j in range(len(BottomSection[i])):
-            sheet_BS.write(r_BS, c_BS + j, BottomSection[i][j])
+            sheet_BS.write_number(r_BS, c_BS + j, float(BottomSection[i][j]))
         r_BS += 1
     c_BS += len(BottomSection[1])
     max_tays(BottomSection, max_trays_bottom, workbook, 'Bottom Section')
