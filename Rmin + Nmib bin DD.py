@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def x_eq(y):
     global mix
     mixture = mix
@@ -42,13 +44,38 @@ x_1_temp = input('количество первого компонента в п
 x_1 = ch_comma_to_dot(x_1_temp)
 #x_1d_temp = input('количество первого компонента в дистиллате(доли): ')
 #x_1d = ch_comma_to_dot(x_1d_temp)
-x_1d = 0.9999
+x_1d = 0.999
 #F_temp = input('питание кмоль/ч: ')
 #F = ch_comma_to_dot(F_temp)
+F = 0.4
+x_1w = 1 - x_1d
+D = F * (x_1 - x_1w)/(x_1d - x_1w)
+f = F / D
 
 Rmin = (x_1d - y_eq(x_1)) / (y_eq(x_1) - x_1)
+R = Rmin * 1.3
+y = x_1d
+x = x_1d
+N = 0
+x_pr = 0
+x_last = 0
+while x > x_1w:
+    x = x_eq(y)
+    x_last = x
+    if round(x_last, 5) == round(x_pr, 5):
+        break
+    if x > x_1:
+        y_work_up = R / (R + 1) * x + x_1d / (R + 1)
+        y = y_work_up
+    elif x < x_1:
+        y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
+        y = y_work_down
+    x_pr = x_last
+    N +=1
+
 print(ch_d_to_c(y_eq(x_1) / x_1))
 print(ch_d_to_c(y_eq(x_1)))
 print(ch_d_to_c(Rmin))
-
+print(x_eq(0.999))
+print(N)
 
