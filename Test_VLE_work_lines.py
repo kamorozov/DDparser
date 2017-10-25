@@ -3,6 +3,7 @@ x = []
 y =[]
 for i in range(0, 101):
     x.append(i / 100)
+    # benzene - toluene
     y_i = - 0.4191 * (i/ 100) ** 4 + 1.5087 * (i/ 100) ** 3 - 2.3858 * (i/ 100) ** 2 + 2.2951 * (i/ 100) + 0.0005
     y.append(y_i)
 plt.plot([0, 1], [0, 1])

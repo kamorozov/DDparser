@@ -4,24 +4,24 @@ def x_eq(y):
     global mix
     mixture = mix
     if mixture == 'bt':
-        yx = 0.8551 * y ** 4 - 0.8917 * y ** 3 + 0.6754 * y ** 2 + 0.3567 * y + 0.0022
+         x = 0.8551 * y ** 4 - 0.8917 * y ** 3 + 0.6754 * y ** 2 + 0.3567 * y + 0.0022
     elif mixture == 'te':
-        yx = 0.6986 * y ** 4 - 1.067 * y ** 3 + 1.028 * y ** 2 + 0.3335 * y + 0.0031
+        x = 0.6986 * y ** 4 - 1.067 * y ** 3 + 1.028 * y ** 2 + 0.3335 * y + 0.0031
     elif mixture == 'ea':
-        yx = - 2.815 * y ** 5 + 7.403 * y ** 4 - 5.5997 * y ** 3 + 1.9874 * y ** 2 + 0.0262 * y + 0.0024
-    return yx
+        x = -6.2194 * y ** 6 + 16.525 * y ** 5 - 15.399 * y ** 4 + 6.9697 * y ** 3 - 1.1967 * y ** 2 + 0.3218 * y - 0.0004
+    return x
 
 
 def y_eq(x):
     global mix
     mixture = mix
     if mixture == 'bt':
-        xy = - 0.4191 * x ** 4 + 1.5087 * x ** 3 - 2.3858 * x ** 2 + 2.2951 * x + 0.0005
+        y = - 0.4191 * x ** 4 + 1.5087 * x ** 3 - 2.3858 * x ** 2 + 2.2951 * x + 0.0005
     elif mixture == 'te':
-        xy = - 0.7937 * x ** 4 + 2.0119 * x ** 3 - 2.2674 * x ** 2 + 2.0401 * x + 0.0059
+        y = - 0.7937 * x ** 4 + 2.0119 * x ** 3 - 2.2674 * x ** 2 + 2.0401 * x + 0.0059
     elif mixture == 'ea':
-        xy = 4.0475 * x ** 5 - 12.916 * x ** 4 + 16.378 * x ** 3 - 10.649 * x ** 2 + 4.1377 * x + 0.0052
-    return xy
+        y = -5.0929 * x ** 6 + 19.326 * x ** 5 - 30.215 * x ** 4 + 25.512 * x ** 3 - 12.88 *x **2 + 4.3483 * x + 0.0011
+    return y
 
 
 def ch_comma_to_dot(string):
@@ -39,19 +39,16 @@ def ch_d_to_c(number):
 
 
 mix = input('смесь (bt, te, ea): ')
-# mix = 'bt'
 x_1_temp = input('количество первого компонента в питании(доли): ')
 x_1 = ch_comma_to_dot(x_1_temp)
 x_1d_temp = input('количество первого компонента в дистиллате(доли): ')
 x_1d = ch_comma_to_dot(x_1d_temp)
-# x_1d = 0.999
 F_temp = input('питание кмоль/ч: ')
 F = ch_comma_to_dot(F_temp)
-# F = 0.4
 x_1w = 1 - x_1d
 D = F * (x_1 - x_1w)/(x_1d - x_1w)
 f = F / D
-
+Rmin_ter = (1 - y_eq(x_1)) / (y_eq(x_1) - x_1)
 Rmin = (x_1d - y_eq(x_1)) / (y_eq(x_1) - x_1)
 R = Rmin * 1.3
 y = x_1d
@@ -84,16 +81,20 @@ while x > x_1w:
 plt.plot(x_work, y_work)
 #print(*(round(x, 4) for x in x_work))
 #print(*(round(y, 4) for y in y_work))
+print('Rmin (теоретическое) =', ch_d_to_c(Rmin_ter))
 print('Rmin =', ch_d_to_c(Rmin))
+print('R =', ch_d_to_c(R))
 print('число тарело:', N)
 
-x = []
-y =[]
-for i in range(0, 101):
+x = [0]
+y =[0]
+for i in range(1, 100):
     x.append(i / 100)
     y_i = y_eq(i / 100)
     y.append(y_i)
 plt.plot([0, 1], [0, 1])
+x.append(1)
+y.append(1)
 plt.plot(x, y)
 
 x_work_line = []
