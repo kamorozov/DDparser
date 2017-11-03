@@ -1,0 +1,32 @@
+# open the file for reading
+wbRD = xlrd.open_workbook('DD_Summary_Basic.xlsx')
+sheets = wbRD.sheets()
+
+# open the same file for writing (just don't write yet)
+workbook = xlsxwriter.Workbook(result_xlsx)
+
+# run through the sheets and store sheets in workbook
+# this still doesn't write to the file yet
+for sheet in sheets: # write data from old file
+    newSheet = workbook.add_worksheet(sheet.name)
+    for row in range(sheet.nrows):
+        for col in range(sheet.ncols):
+            newSheet.write(row, col, sheet.cell(row, col).value)
+
+
+def ch_comma_to_dot(string):
+    if string.find(',') > -1:
+        number = float(string[:string.find(',')] + '.' + string[string.find(',') + 1:])
+    else:
+        number = float(string)
+    return number
+
+TextFile = open('C:/Users/kamorozov/Desktop/2 col 5 sheme.txt', 'r')
+templines = TextFile.read().split()
+for i in range(4):
+    templines.pop(0)
+dots = []
+for j in range(0,len(templines),3):
+    dots.append((int(templines[j]), int(templines[j + 1]), float(ch_comma_to_dot(templines[j + 2]))))
+
+print(dots)
