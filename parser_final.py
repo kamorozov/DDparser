@@ -48,15 +48,17 @@ def section(name_of_Section):
     for j in range(1, len(name_of_Section), 2):
         temp_section.append(name_of_Section[j - 1])
         temp_section.append(name_of_Section[j][0])
-    if temp_section[1][0] > temp_section[-1][0]:
-        temp2_section = []
-        for k in range(1, len(temp_section) // 2, 2):
-            temp2_section.append(temp_section[k - 1])
-            temp2_section.append(temp_section[-k])
-        return temp2_section
+    if len(temp_section) > 0:
+        if temp_section[1][0] > temp_section[-1][0]:
+            temp2_section = []
+            for k in range(1, len(temp_section) // 2, 2):
+                temp2_section.append(temp_section[k - 1])
+                temp2_section.append(temp_section[-k])
+            return temp2_section
+        else:
+            return temp_section
     else:
         return temp_section
-
 
 # максимальное количество тарелокв для записи
 def max_tays(Section, var_max_trays, NameOfBook, NameOfSheet):
@@ -125,12 +127,18 @@ for file in list_of_files:
     sheet_BD.write_number(len(BasicData) + 2, c_BD, len(TopSection) // 2 + len(BottomSection) // 2)
     sheet_BD.write_number(len(BasicData) + 3,  c_BD, len(TopSection) // 2)
     sheet_BD.write_number(len(BasicData) + 4, c_BD, len(BottomSection) // 2)
-    for i in range(len(TopSection[1]) - 1):
-        sheet_BD.write(len(BasicData) + 5 + i, 0, 'x' + str(i + 1) + 'D')
-        sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(TopSection[1][i + 1]))
-    for i in range(len(BottomSection[-1]) - 1):
-        sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
-        sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD,float(BottomSection[-1][i + 1]))
+    if len(TopSection) > 0:
+        for i in range(len(TopSection[1]) - 1):
+            sheet_BD.write(len(BasicData) + 5 + i, 0, 'x' + str(i + 1) + 'D')
+            sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(TopSection[1][i + 1]))
+    if len(BottomSection) > 0:
+        for i in range(len(BottomSection[-1]) - 1):
+            if len(TopSection) > 0:
+                sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
+                sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD,float(BottomSection[-1][i + 1]))
+            else:
+                sheet_BD.write(len(BasicData) + 9 + i , 0, 'x' + str(i + 1) + 'W')
+                sheet_BD.write_number(len(BasicData) + 9 + i , c_BD, float(BottomSection[-1][i + 1]))
     c_BD += 1
 
     # добавление информации на вкладку Top Section
@@ -138,13 +146,14 @@ for file in list_of_files:
     r_TS = 2
     sheet_TS.write(0, c_TS, str(list_of_file_names[list_of_files.index(file)][:-4]))
     sheet_TS.write(1, c_TS, 'T, K')
-    for x in range(1, len(TopSection[1])):
-        sheet_TS.write(1, c_TS + x, 'x' + str(x))
-    for i in range(1, len(TopSection), 2):
-        for j in range(len(TopSection[i])):
-            sheet_TS.write_number(r_TS, c_TS + j, float(TopSection[i][j]))
-        r_TS += 1
-    c_TS += len(TopSection[1])
+    if len(TopSection) > 0:
+        for x in range(1, len(TopSection[1])):
+            sheet_TS.write(1, c_TS + x, 'x' + str(x))
+        for i in range(1, len(TopSection), 2):
+            for j in range(len(TopSection[i])):
+                sheet_TS.write_number(r_TS, c_TS + j, float(TopSection[i][j]))
+            r_TS += 1
+        c_TS += len(TopSection[1])
     max_tays(TopSection, max_trays_top, workbook, 'Top Section')
 
     # добавление информации на вкладку Bottom Section
