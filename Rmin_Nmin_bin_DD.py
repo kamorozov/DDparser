@@ -11,7 +11,7 @@ def x_eq(y, mixture):
     return yx
 
 
-def y_eq(x, mixture):
+def y_eq(x: object, mixture: object) -> object:
     if mixture == 'bt':
         xy = - 0.4191 * x ** 4 + 1.5087 * x ** 3 - 2.3858 * x ** 2 + 2.2951 * x + 0.0005
     elif mixture == 'te':
@@ -44,11 +44,43 @@ def Rmin_Nmin(mix, x_1, x_1d, F):
     R = R_min * 1.3
     y = x_1d
     x = x_1d
-    x_work = [x]
-    y_work = [y]
     N = 0
     x_pr = 0
     x_last = 0
+    while x > x_1w:
+        x = x_eq(y, mix)
+        x_last = x
+        if round(x_last, 5) == round(x_pr, 5):
+            break
+        if x > x_1:
+            y_work_up = R / (R + 1) * x + x_1d / (R + 1)
+        elif x < x_1:
+            y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
+        x_pr = x_last
+        N +=1
+
+    return R_min, R, D_work, N
+
+
+def save_graph(mix, x_1, x_1d, F):
+    x_1w = 1 - x_1d
+
+    D_work = F * (x_1 - x_1w)/(x_1d - x_1w)
+    f = F / D_work
+
+    R_min = (x_1d - y_eq(x_1, mix)) / (y_eq(x_1, mix) - x_1)
+    R = R_min * 1.3
+
+    y = x_1d
+    x = x_1d
+
+    x_work = [x]
+    y_work = [y]
+
+    N = 0
+    x_pr = 0
+    x_last = 0
+
     while x > x_1w:
         x = x_eq(y, mix)
         x_work.append(x)
@@ -69,34 +101,27 @@ def Rmin_Nmin(mix, x_1, x_1d, F):
         x_pr = x_last
         N +=1
 
-    return R_min, R, N
+    plt.plot(x_work, y_work)
 
+    x = []
+    y =[]
+    for i in range(0, 101):
+        x.append(i / 100)
+        y_i = y_eq(i / 100, mix)
+        y.append(y_i)
+    plt.plot([0, 1], [0, 1])
+    plt.plot(x, y)
 
+    x_work_line = []
+    y_work_line = []
+    for j in range(int(x_1w * 1000), int(x_1d * 1000 + 1)):
+        x_work_line.append(j / 1000)
+        if j / 1000 <= x_1:
+            y_work_down = (R + f) / (R + 1) * (j / 1000) - (1 - f) / (R + 1) * x_1w
+            y_work_line.append(y_work_down)
+        elif j / 1000 >= x_1:
+            y_work_up = R / (R + 1) * (j / 1000) + x_1d / (R + 1)
+            y_work_line.append(y_work_up)
 
-#plt.plot(x_work, y_work)
-
-#x = []
-#y =[]
-#for i in range(0, 101):
-#    x.append(i / 100)
-#    y_i = y_eq(i / 100)
-#    y.append(y_i)
-#plt.plot([0, 1], [0, 1])
-#plt.plot(x, y)
-
-#x_work_line = []
-#y_work_line = []
-#for j in range(int(x_1w * 1000), int(x_1d * 1000 + 1)):
-#    x_work_line.append(j / 1000)
-#    if j / 1000 <= x_1:
-#        y_work_down = (R + f) / (R + 1) * (j / 1000) - (1 - f) / (R + 1) * x_1w
-#        y_work_line.append(y_work_down)
-#    elif j / 1000 >= x_1:
-#        y_work_up = R / (R + 1) * (j / 1000) + x_1d / (R + 1)
-#        y_work_line.append(y_work_up)
-
-#plt.plot(x_work_line, y_work_line)
-#plt.axis([0, 1, 0, 1])
-
-#`plt.show()
-
+    plt.plot(x_work_line, y_work_line)
+    plt.axis([0, 1, 0, 1])

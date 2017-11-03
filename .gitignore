@@ -25,6 +25,7 @@ wheels/
 .installed.cfg
 *.egg
 .idea/
+*.png
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -100,3 +101,67 @@ ENV/
 
 # mypy
 .mypy_cache/
+Test files/10_5.png
+Test files/11_5.png
+Test files/12_5.png
+Test files/13_5.png
+Test files/14_5.png
+Test files/15_5.png
+Test files/16_5.png
+Test files/17_5.png
+Test files/18_5.png
+Test files/19_5.png
+Test files/1_5.png
+Test files/20_5.png
+Test files/21_5.png
+Test files/22_5.png
+Test files/23_5.png
+Test files/24_5.png
+Test files/25_5.png
+Test files/26_5.png
+Test files/27_5.png
+Test files/28_5.png
+Test files/29_5.png
+Test files/2_5.png
+Test files/30_5.png
+Test files/31_5.png
+Test files/32_5.png
+Test files/33_5.png
+Test files/34_5.png
+Test files/35_5.png
+Test files/36_5.png
+Test files/37_5.png
+Test files/38_5.png
+Test files/39_5.png
+Test files/3_5.png
+Test files/40_5.png
+Test files/41_5.png
+Test files/42_5.png
+Test files/43_5.png
+Test files/44_5.png
+Test files/45_5.png
+Test files/46_5.png
+Test files/47_5.png
+Test files/48_5.png
+Test files/49_5.png
+Test files/4_5.png
+Test files/50_5.png
+Test files/51_5.png
+Test files/52_5.png
+Test files/53_5.png
+Test files/54_5.png
+Test files/55_5.png
+Test files/56_5.png
+Test files/57_5.png
+Test files/58_5.png
+Test files/59_5.png
+Test files/5_5.png
+Test files/60_5.png
+Test files/61_5.png
+Test files/62_5.png
+Test files/63_5.png
+Test files/64_5.png
+Test files/6_5.png
+Test files/7_5.png
+Test files/8_5.png
+Test files/9_5.png
