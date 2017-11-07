@@ -29,7 +29,7 @@ result_xlsx = Path + 'DD_Summary ' + File[:File.rfind('.')] + '.xlsx'
 workbook = xlsxwriter.Workbook(result_xlsx)
 sheet = workbook.add_worksheet('Rmin Rwork Nwork')
 gr_sheet = workbook.add_worksheet('Graphics')
-title = ('№ точки', 'Схема', 'x1F', 'D', 'Rmin', 'Vmin','Rwork', 'Dwork', 'Vwork', 'Nwork', 'смесь')
+title = ('№ точки', 'Схема', 'x1F','F', 'D', 'B', 'Rmin', 'Vmin','Rwork', 'Dwork', 'Vwork', 'Nwork', 'смесь')
 for name in title:
     sheet.write(0, title.index(name), name)
 row = 1
@@ -39,17 +39,19 @@ for dot in dots:
     sheet.write(row + dots.index(dot), 0, dot[0])
     sheet.write(row + dots.index(dot), 1, dot[1])
     sheet.write(row + dots.index(dot), 2, dot[2])
-    sheet.write(row + dots.index(dot), 3, dot[5])
-    sheet.write(row + dots.index(dot), 4, RminRN[0])
-    sheet.write(row + dots.index(dot), 5, dot[5] * (RminRN[0] + 1))
-    sheet.write(row + dots.index(dot), 6, RminRN[1])
-    sheet.write(row + dots.index(dot), 7, RminRN[2])
-    sheet.write(row + dots.index(dot), 8, RminRN[2] * (RminRN[1] + 1))
-    sheet.write(row + dots.index(dot), 9, RminRN[3])
-    sheet.write(row + dots.index(dot), 10, dot[-1])
-    RN.save_graph(dot[6], dot[2], dot[3], dot[4])
-    fig_file = Path + str(dot[0]) + '_' + str(dot[1]) + '.png'
-    plt.savefig(fig_file, dpi = 150)
+    sheet.write(row + dots.index(dot), 3, dot[4])
+    sheet.write(row + dots.index(dot), 4, dot[5])
+    sheet.write(row + dots.index(dot), 5, dot[4] - dot[5])
+    sheet.write(row + dots.index(dot), 6, RminRN[0])
+    sheet.write(row + dots.index(dot), 7, dot[5] * (RminRN[0] + 1))
+    sheet.write(row + dots.index(dot), 8, RminRN[1])
+    sheet.write(row + dots.index(dot), 9, RminRN[2])
+    sheet.write(row + dots.index(dot), 10, RminRN[2] * (RminRN[1] + 1))
+    sheet.write(row + dots.index(dot), 11, RminRN[3])
+    sheet.write(row + dots.index(dot), 12, dot[-1])
+#    RN.save_graph(dot[6], dot[2], dot[3], dot[4])
+#    fig_file = Path + str(dot[0]) + '_' + str(dot[1]) + '.png'
+#    plt.savefig(fig_file, dpi = 150)
 
 
 
