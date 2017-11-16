@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import xlsxwriter as xlsw
 
 def x_eq(y, mixture):
     if mixture == 'bt':
@@ -50,15 +49,20 @@ def Rmin_Nmin(mix, x_1, x_1d, F):
     while x > x_1w:
         x = x_eq(y, mix)
         x_last = x
-        if round(x_last, 5) == round(x_pr, 5):
+        if round(x_last, 5) > round(x_pr, 5):
+            N = -1
             break
-        if x > x_1:
-            y_work_up = R / (R + 1) * x + x_1d / (R + 1)
-        elif x < x_1:
-            y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
-        x_pr = x_last
-        N +=1
-
+        else:
+            if round(x_last, 5) == round(x_pr, 5):
+                break
+            if x > x_1:
+                y_work_up = R / (R + 1) * x + x_1d / (R + 1)
+                y = y_work_up
+            elif x < x_1:
+                y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
+                y = y_work_down
+            x_pr = x_last
+            N += 1
     return R_min, R, D_work, N
 
 
@@ -86,20 +90,24 @@ def save_graph(mix, x_1, x_1d, F):
         x_work.append(x)
         y_work.append(y_eq(x, mix))
         x_last = x
-        if round(x_last, 5) == round(x_pr, 5):
+        if round(x_last, 5) > round(x_pr, 5):
+            N = -1
             break
-        if x > x_1:
-            y_work_up = R / (R + 1) * x + x_1d / (R + 1)
-            y = y_work_up
-            x_work.append(x)
-            y_work.append(y)
-        elif x < x_1:
-            y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
-            y = y_work_down
-            x_work.append(x)
-            y_work.append(y)
-        x_pr = x_last
-        N +=1
+        else:
+            if round(x_last, 5) == round(x_pr, 5):
+                break
+            if x > x_1:
+                y_work_up = R / (R + 1) * x + x_1d / (R + 1)
+                y = y_work_up
+                x_work.append(x)
+                y_work.append(y)
+            elif x < x_1:
+                y_work_down = (R + f) / (R + 1) * x - (1 - f) / (R + 1) * x_1w
+                y = y_work_down
+                x_work.append(x)
+                y_work.append(y)
+            x_pr = x_last
+            N +=1
 
     plt.plot(x_work, y_work)
 
