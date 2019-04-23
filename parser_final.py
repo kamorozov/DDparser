@@ -1,5 +1,6 @@
 import os
 import xlsxwriter
+import click
 
 # преобразование файла в список
 def lists_from_file(FileName):
@@ -68,6 +69,13 @@ def max_tays(Section, var_max_trays, NameOfBook, NameOfSheet):
             sheet.write(i + 2, 0, 'Tray# ' + str(i + 1))
         var_max_trays = len(Section) // 2
 
+# замена запятой на точку
+def ch_comma_to_dot(string):
+    if string.find(',') > -1:
+        number = float(string[:string.find(',')] + '.' + string[string.find(',') + 1:])
+    else:
+        number = float(string)
+    return number
 
 # Обработка пути к паке с файлами
 temp_path = str(input('Enter path to folder with files: '))
@@ -130,12 +138,12 @@ for file in list_of_files:
     if len(TopSection) > 0:
         for i in range(len(TopSection[1]) - 1):
             sheet_BD.write(len(BasicData) + 5 + i, 0, 'x' + str(i + 1) + 'D')
-            sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(TopSection[1][i + 1]))
+            sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(ch_comma_to_dot(TopSection[1][i + 1])))
     if len(BottomSection) > 0:
         for i in range(len(BottomSection[-1]) - 1):
             if len(TopSection) > 0:
                 sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
-                sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD,float(BottomSection[-1][i + 1]))
+                sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD, float(ch_comma_to_dot(BottomSection[-1][i + 1])))
             else:
                 sheet_BD.write(len(BasicData) + 9 + i , 0, 'x' + str(i + 1) + 'W')
                 sheet_BD.write_number(len(BasicData) + 9 + i , c_BD, float(BottomSection[-1][i + 1]))
@@ -151,7 +159,7 @@ for file in list_of_files:
             sheet_TS.write(1, c_TS + x, 'x' + str(x))
         for i in range(1, len(TopSection), 2):
             for j in range(len(TopSection[i])):
-                sheet_TS.write_number(r_TS, c_TS + j, float(TopSection[i][j]))
+                sheet_TS.write_number(r_TS, c_TS + j, float(ch_comma_to_dot(TopSection[i][j])))
             r_TS += 1
         c_TS += len(TopSection[1])
     max_tays(TopSection, max_trays_top, workbook, 'Top Section')
@@ -166,10 +174,11 @@ for file in list_of_files:
             sheet_BS.write(1, c_BS + x, 'x' + str(x))
         for i in range(1, len(BottomSection), 2):
             for j in range(len(BottomSection[i])):
-                sheet_BS.write_number(r_BS, c_BS + j, float(BottomSection[i][j]))
+                sheet_BS.write_number(r_BS, c_BS + j, float(ch_comma_to_dot(BottomSection[i][j])))
             r_BS += 1
         c_BS += len(BottomSection[1])
     max_tays(BottomSection, max_trays_bottom, workbook, 'Bottom Section')
+
 
 print('All done!')
 workbook.close()
