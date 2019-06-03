@@ -136,17 +136,27 @@ for file in list_of_files:
     sheet_BD.write_number(len(BasicData) + 3,  c_BD, len(TopSection) // 2)
     sheet_BD.write_number(len(BasicData) + 4, c_BD, len(BottomSection) // 2)
     if len(TopSection) > 0:
+        sheet_BD.write(len(BasicData) + 5, 0, 'T_D, C')
+        sheet_BD.write_number(len(BasicData) + 5, c_BD, float(ch_comma_to_dot(TopSection[1][0])) - 273.15)
         for i in range(len(TopSection[1]) - 1):
-            sheet_BD.write(len(BasicData) + 5 + i, 0, 'x' + str(i + 1) + 'D')
-            sheet_BD.write_number(len(BasicData) + 5 + i, c_BD, float(ch_comma_to_dot(TopSection[1][i + 1])))
+            sheet_BD.write(len(BasicData) + 6 + i, 0, 'x' + str(i + 1) + 'D')
+            sheet_BD.write_number(len(BasicData) + 6 + i, c_BD, float(ch_comma_to_dot(TopSection[1][i + 1])))
     if len(BottomSection) > 0:
-        for i in range(len(BottomSection[-1]) - 1):
-            if len(TopSection) > 0:
-                sheet_BD.write(len(BasicData) + 4 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
-                sheet_BD.write_number(len(BasicData) + 4 + i + len(TopSection[1]), c_BD, float(ch_comma_to_dot(BottomSection[-1][i + 1])))
-            else:
-                sheet_BD.write(len(BasicData) + 9 + i , 0, 'x' + str(i + 1) + 'W')
-                sheet_BD.write_number(len(BasicData) + 9 + i , c_BD, float(BottomSection[-1][i + 1]))
+        if len(TopSection) > 0:
+            sheet_BD.write(len(BasicData) + 5 + len(TopSection[1]), 0, 'T_W, C')
+            sheet_BD.write_number(len(BasicData) + 5 + len(TopSection[1]), c_BD,
+                                  float(ch_comma_to_dot(BottomSection[-1][0])) - 273.15)
+            for i in range(len(BottomSection[-1]) - 1):
+                sheet_BD.write(len(BasicData) + 6 + i + len(TopSection[1]), 0, 'x' + str(i + 1) + 'W')
+                sheet_BD.write_number(len(BasicData) + 6 + i + len(TopSection[1]), c_BD,
+                                      float(ch_comma_to_dot(BottomSection[-1][i + 1])))
+        else:
+            sheet_BD.write(len(BasicData) + 10, 0, 'T_W, C')
+            sheet_BD.write_number(len(BasicData) + 10, c_BD,
+                                  float(ch_comma_to_dot(BottomSection[-1][0])) - 273.15)
+            for i in range(len(BottomSection[-1]) - 1):
+                sheet_BD.write(len(BasicData) + 11 + i, 0, 'x' + str(i + 1) + 'W')
+                sheet_BD.write_number(len(BasicData) + 11 + i, c_BD, float(ch_comma_to_dot(BottomSection[-1][i + 1])))
     c_BD += 1
 
     # добавление информации на вкладку Top Section
