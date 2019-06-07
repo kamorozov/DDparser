@@ -1,6 +1,5 @@
 import os
 import xlsxwriter
-import click
 
 # преобразование файла в список
 def lists_from_file(FileName):
